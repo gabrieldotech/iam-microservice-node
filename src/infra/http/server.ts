@@ -1,4 +1,6 @@
 import fastify from "fastify";
+import { CreateUserUseCase } from "../../modules/users/use-cases/create-user.use-case.js";
+import { createUserSchema } from "../../modules/users/validators/user-validator.js";
 import { z } from "zod";
 
 const app = fastify();
@@ -10,18 +12,12 @@ app.get("/health", async () => {
 });
 
 app.post("/users", async (req, reply) => {
-  const createUserSchema = z.object({
-    name: z.string().min(3, "Nome deve ter pelo menos 3 caracteres."),
-    email: z.email("Email inválido"),
-    password: z.string().min(8, "Senha deve ter pelo menos 8 caracteres"),
-  });
-
   try {
     const { name, email, password } = createUserSchema.parse(req.body);
-    return reply.status(201).send({
-      message: "Dados válidados com sucesso.",
-      user: { name, email },
-    });
+    const createUserUseCase = new CreateUserUseCase();
+    const user = await createUserUseCase.execute({ name, email, password });
+    const { password_hash, ...userResponse } = user;
+    reply.status(201).send(userResponse);
   } catch (error) {
     if (error instanceof z.ZodError) {
       return reply.status(400).send({
@@ -29,6 +25,14 @@ app.post("/users", async (req, reply) => {
         errors: z.treeifyError(error),
       });
     }
+
+    if (error instanceof Error) {
+      if (error.message === "User already exists.") {
+        return reply.status(409).send({ message: error.message });
+      }
+    }
+
+    console.error(error);
     return reply.status(500).send({ message: "Erro interno no servidor." });
   }
 });

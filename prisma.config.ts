@@ -1,8 +1,8 @@
 import { defineConfig } from "@prisma/config";
-import "dotenv/config"; // 💡 Esta linha é a chave. Ela lê o .env e coloca no process.env
+import "dotenv/config";
 
 export default defineConfig({
   datasource: {
-    url: process.env.DATABASE_URL,
+    url: process.env.DATABASE_URL!,
   },
 });
