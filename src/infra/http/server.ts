@@ -1,9 +1,17 @@
 import fastify from "fastify";
+import jwt from "@fastify/jwt";
+import { authenticateRoute } from "./routes/authenticate.js";
 import { CreateUserUseCase } from "../../modules/users/use-cases/create-user.use-case.js";
 import { createUserSchema } from "../../modules/users/validators/user-validator.js";
 import { z } from "zod";
 
 const app = fastify();
+
+app.register(jwt, {
+  secret: process.env.JWT_SECRET || "fallback-secret-para-dev",
+});
+
+app.register(authenticateRoute);
 
 app.get("/health", async () => {
   return {
