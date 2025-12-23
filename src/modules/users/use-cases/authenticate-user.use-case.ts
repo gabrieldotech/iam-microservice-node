@@ -1,4 +1,4 @@
-import { prisma } from "../../../infra/database/prisma.js";
+import type { IUsersRepository } from "../repositories/users-repository.interface.js";
 import { compare } from "bcrypt";
 import type {
   AuthenticateUserRequest,
@@ -6,13 +6,12 @@ import type {
 } from "./authenticate-user.dto.js";
 
 export class AuthenticateUserUseCase {
+  constructor(private userRepository: IUsersRepository) {}
   async execute({
     email,
     password_plain,
   }: AuthenticateUserRequest): Promise<AuthenticateUserResponse> {
-    const user = await prisma.user.findUnique({
-      where: { email },
-    });
+    const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
       throw new Error("Invalid Credentials");
