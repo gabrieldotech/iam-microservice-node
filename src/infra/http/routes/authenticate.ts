@@ -1,6 +1,6 @@
 import type { FastifyInstance } from "fastify";
 import { z } from "zod";
-import { AuthenticateUserUseCase } from "../../../modules/users/use-cases/authenticate-user.use-case.js";
+import { makeAuthenticateUserUseCase } from "../../../modules/users/use-cases/factories/make-authenticate-use-case.js";
 
 export async function authenticateRoute(app: FastifyInstance) {
   app.post("/sessions", async (request, reply) => {
@@ -11,7 +11,7 @@ export async function authenticateRoute(app: FastifyInstance) {
 
     const { email, password } = authenticateBodySchema.parse(request.body);
 
-    const authenticateUserUseCase = new AuthenticateUserUseCase();
+    const authenticateUserUseCase = makeAuthenticateUserUseCase();
 
     const { user } = await authenticateUserUseCase.execute({
       email,

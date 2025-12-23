@@ -10,7 +10,6 @@ export class AuthenticateUserUseCase {
     email,
     password_plain,
   }: AuthenticateUserRequest): Promise<AuthenticateUserResponse> {
-    // 1. Buscar o usuário pelo e-mail
     const user = await prisma.user.findUnique({
       where: { email },
     });
