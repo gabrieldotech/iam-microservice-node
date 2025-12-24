@@ -53,3 +53,18 @@ export const getProfileSchema = {
     }),
   },
 };
+
+export const refreshSchema = {
+  summary: "Renew access token",
+  description:
+    "Uses the refreshToken cookie to generate a new access token and a new refresh token (Rotation).",
+  tags: ["Authentication"],
+  response: {
+    200: z.object({
+      token: z.string().describe("New Access Token"),
+    }),
+    401: z.object({
+      message: z.string(),
+    }),
+  },
+};
