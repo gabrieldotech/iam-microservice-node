@@ -1,6 +1,9 @@
-export class InvalidRefreshTokenError extends Error {
+import { AppError } from "./app-error.js";
+
+export class InvalidRefreshTokenError extends AppError {
+  statusCode = 401;
+
   constructor() {
-    super("Invalid or expired refresh token.");
-    this.name = "InvalidRefreshTokenError";
+    super("Invalid refresh token.");
   }
 }
