@@ -26,6 +26,12 @@ A professional and secure Identity and Access Management (IAM) service designed 
 ## How to Run (Development)
 
 ### Prerequisites
+<<<<<<< HEAD
+=======
+
+- Node.js v22 or higher (Uses native --env-file support)
+- Docker and Docker Compose
+>>>>>>> 41300ae (docs: overhaul readme for portfolio and add MIT license)
 
 - Node.js (v18 or higher)
 - Docker (for database instance)
