@@ -37,13 +37,20 @@ app.register(swagger, {
   openapi: {
     info: {
       title: "IAM Microservice",
-      description: "Serviço de Identidade e Acesso Profissional",
+      description: "Professional Identity and Access Management Service",
       version: "1.0.0",
     },
-    tags: [
-      { name: "Authentication", description: "Endpoints de login e refresh" },
-      { name: "Users", description: "Endpoints de gestão de usuários" },
-    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT",
+          description:
+            "JWT access token sent in the Authorization header using the Bearer scheme.",
+        },
+      },
+    },
   },
   transform: jsonSchemaTransform,
 });

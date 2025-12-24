@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "vitest run",
-    "dev": "tsx watch src/infra/http/server.ts"
+    "test": "vitest --env-file=.env",
+    "dev": "tsx watch --env-file=.env src/infra/http/server.ts"
   },
   "keywords": [],
   "author": "",
