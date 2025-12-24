@@ -1,13 +1,20 @@
 import type { FastifyInstance } from "fastify";
+import type { ZodTypeProvider } from "fastify-type-provider-zod";
 import { makeCreateUserUseCase } from "../../../modules/users/use-cases/factories/make-create-user-use-case.js";
-import { createUserSchema } from "../../../modules/users/validators/user-validator.js";
+import { createUserSchema } from "../schemas/users.schema.js";
 
 export async function createUser(app: FastifyInstance) {
-  app.post("/users", async (req, reply) => {
-    const { name, email, password } = createUserSchema.parse(req.body);
-    const createUserUseCase = makeCreateUserUseCase();
-    const user = await createUserUseCase.execute({ name, email, password });
-    const { password_hash, ...userResponse } = user;
-    reply.status(201).send(userResponse);
-  });
+  app.withTypeProvider<ZodTypeProvider>().post(
+    "/users",
+    {
+      schema: createUserSchema,
+    },
+    async (req, reply) => {
+      const { name, email, password } = req.body;
+      const createUserUseCase = makeCreateUserUseCase();
+      const user = await createUserUseCase.execute({ name, email, password });
+      const { password_hash, ...userResponse } = user;
+      reply.status(201).send(userResponse);
+    }
+  );
 }

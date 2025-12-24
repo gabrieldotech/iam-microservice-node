@@ -4,6 +4,7 @@ import type {
   AuthenticateUserRequest,
   AuthenticateUserResponse,
 } from "./authenticate-user.dto.js";
+import { InvalidCredentialsError } from "../../../core/errors/invalid-credentials-error.js";
 
 export class AuthenticateUserUseCase {
   constructor(private userRepository: IUsersRepository) {}
@@ -14,12 +15,12 @@ export class AuthenticateUserUseCase {
     const user = await this.userRepository.findByEmail(email);
 
     if (!user) {
-      throw new Error("Invalid Credentials");
+      throw new InvalidCredentialsError();
     }
 
     const isPasswordValid = await compare(password_plain, user.password_hash);
     if (!isPasswordValid) {
-      throw new Error("Invalid Credentials.");
+      throw new InvalidCredentialsError();
     }
 
     return {

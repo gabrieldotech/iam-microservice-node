@@ -1,5 +1,6 @@
+import { UserAlreadyExistsError } from "../../../core/errors/user-already-exists-error.js";
 import type { IUsersRepository } from "../repositories/users-repository.interface.js";
-import type { CreateUserData } from "../validators/user-validator.js";
+import type { CreateUserData } from "../../../infra/http/schemas/users.schema.js";
 import bcrypt from "bcrypt";
 
 export class CreateUserUseCase {
@@ -9,7 +10,7 @@ export class CreateUserUseCase {
     const userWithSameEmail = await this.userRepository.findByEmail(data.email);
 
     if (userWithSameEmail) {
-      throw new Error("User already exists.");
+      throw new UserAlreadyExistsError();
     }
 
     const passwordHash = await bcrypt.hash(data.password, 10);
