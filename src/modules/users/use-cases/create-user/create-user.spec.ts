@@ -1,6 +1,6 @@
 import { expect, it, describe, beforeEach } from "vitest";
 import { CreateUserUseCase } from "./create-user.use-case.js";
-import { InMemoryUsersRepository } from "../repositories/in-memory/in-memory-users-repository.js";
+import { InMemoryUsersRepository } from "../../repositories/in-memory/in-memory-users-repository.js";
 
 describe("Create User Use Case", () => {
   let usersRepository: InMemoryUsersRepository;
@@ -12,13 +12,14 @@ describe("Create User Use Case", () => {
   });
 
   it("should be able to register a new user", async () => {
-    const user = await sut.execute({
+    const { user } = await sut.execute({
       name: "Zé da manga",
       email: "zedamanga@example.com",
       password: "password123",
     });
 
     expect(user.id).toEqual(expect.any(String));
+    expect(user.role).toEqual("MEMBER");
   });
 
   it("should not be able to register with same email twice", async () => {
@@ -37,5 +38,15 @@ describe("Create User Use Case", () => {
         password: "password123",
       })
     ).rejects.toBeInstanceOf(Error);
+  });
+  it("should be able to register a new user", async () => {
+    const { user } = await sut.execute({
+      name: "Zé da manga",
+      email: "zedamanga@example.com",
+      password: "password123",
+    });
+
+    expect(user.id).toEqual(expect.any(String));
+    expect(user.role).toEqual("MEMBER");
   });
 });

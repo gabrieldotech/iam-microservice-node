@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "vitest --env-file=.env",
+    "test": "node --env-file=.env node_modules/vitest/vitest.mjs",
+    "test:e2e": "node --env-file=.env.test node_modules/vitest/vitest.mjs run src/infra/http/controllers/users/profile.e2e-spec.ts",
     "dev": "tsx watch --env-file=.env src/infra/http/server.ts"
   },
   "keywords": [],
@@ -15,10 +16,13 @@
     "@prisma/config": "^7.2.0",
     "@types/bcrypt": "^6.0.0",
     "@types/node": "^25.0.3",
+    "@types/supertest": "^6.0.3",
     "prisma": "^7.2.0",
+    "supertest": "^7.1.4",
     "ts-node-dev": "^2.0.0",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
+    "vite-tsconfig-paths": "^6.0.3",
     "vitest": "^4.0.16"
   },
   "dependencies": {

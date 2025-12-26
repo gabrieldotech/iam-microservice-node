@@ -6,8 +6,8 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRESQL_USERNAME=docker
-      - POSTGRESQL_PASSWORD=docker
+      - POSTGRESQL_USERNAME=postgres
+      - POSTGRESQL_PASSWORD=password123
       - POSTGRESQL_DATABASE=iam_db
     networks:
       - iam-network
@@ -18,7 +18,7 @@ services:
       - "3333:3333"
     environment:
       - DATABASE_URL=postgresql://docker:docker@database:5432/iam_db?schema=public
-      - JWT_SECRET=sua-chave-secreta-aqui
+      - JWT_SECRET=senha_super_secreta_jwt_iam_service_2026
     depends_on:
       - database
     networks:

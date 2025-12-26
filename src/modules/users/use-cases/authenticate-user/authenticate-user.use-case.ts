@@ -1,10 +1,10 @@
-import type { IUsersRepository } from "../repositories/users-repository.interface.js";
+import type { IUsersRepository } from "../../repositories/users-repository.interface.js";
 import { compare } from "bcrypt";
 import type {
   AuthenticateUserRequest,
   AuthenticateUserResponse,
 } from "./authenticate-user.dto.js";
-import { InvalidCredentialsError } from "../../../core/errors/invalid-credentials-error.js";
+import { InvalidCredentialsError } from "../../../../core/errors/invalid-credentials-error.js";
 
 export class AuthenticateUserUseCase {
   constructor(private userRepository: IUsersRepository) {}
@@ -28,6 +28,7 @@ export class AuthenticateUserUseCase {
         id: user.id,
         email: user.email,
         name: user.name,
+        role: user.role,
       },
     };
   }

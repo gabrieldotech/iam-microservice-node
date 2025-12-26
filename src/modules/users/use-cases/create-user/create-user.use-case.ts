@@ -1,12 +1,13 @@
-import { UserAlreadyExistsError } from "../../../core/errors/user-already-exists-error.js";
-import type { IUsersRepository } from "../repositories/users-repository.interface.js";
-import type { CreateUserData } from "../../../infra/http/schemas/users.schema.js";
+import { UserAlreadyExistsError } from "../../../../core/errors/user-already-exists-error.js";
+import type { IUsersRepository } from "../../repositories/users-repository.interface.js";
+import type { CreateUserData } from "../../../../infra/http/schemas/users.schema.js";
 import bcrypt from "bcrypt";
+import type { CreateUserResponse } from "./create-user.dto.js";
 
 export class CreateUserUseCase {
   constructor(private userRepository: IUsersRepository) {}
 
-  async execute(data: CreateUserData) {
+  async execute(data: CreateUserData): Promise<CreateUserResponse> {
     const userWithSameEmail = await this.userRepository.findByEmail(data.email);
 
     if (userWithSameEmail) {
@@ -21,6 +22,6 @@ export class CreateUserUseCase {
       password_hash: passwordHash,
     });
 
-    return user;
+    return { user };
   }
 }
