@@ -8,12 +8,12 @@ export const errorResponseSchema = z
 
 export const createUserBodySchema = z.object({
   name: z.string().min(3),
-  email: z.string().email(),
+  email: z.email(),
   password: z.string().min(6),
 });
 
 export const authenticateBodySchema = z.object({
-  email: z.string().email(),
+  email: z.email(),
   password: z.string().min(6),
 });
 
@@ -29,9 +29,11 @@ export const createUserSchema = {
   response: {
     201: z
       .object({
-        id: z.uuid(),
-        name: z.string().nullable(),
-        email: z.email(),
+        user: z.object({
+          id: z.uuid(),
+          name: z.string().nullable(),
+          email: z.email(),
+        }),
       })
       .describe("User created successfully"),
     409: errorResponseSchema.describe("The provided email is already in use"),

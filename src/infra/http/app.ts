@@ -13,7 +13,7 @@ import { env } from "../../env/index.js";
 import { authenticateRoute } from "./routes/authenticate.js";
 import { getProfile } from "./routes/get-profile.js";
 import { createUser } from "./routes/create-user.js";
-import { refresh } from "./routes/refresh.js";
+import { refreshToken } from "./routes/refresh.js";
 import { errorHandler } from "./error-handler.js";
 
 export const app = fastify().withTypeProvider<ZodTypeProvider>();
@@ -73,6 +73,6 @@ app.register(jwt, {
 app.register(authenticateRoute);
 app.register(getProfile);
 app.register(createUser);
-app.register(refresh);
+app.register(refreshToken);
 
 app.setErrorHandler(errorHandler);
